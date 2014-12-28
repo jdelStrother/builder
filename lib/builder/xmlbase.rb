@@ -155,9 +155,13 @@ module Builder
       end
     end
 
+    EscapeReplacements = {
+      "\r" => "&#13;",
+      "\n" => "&#10;",
+      "\"" => "&quot;"
+    }
     def _escape_attribute(text)
-      _escape(text).gsub("\n", "&#10;").gsub("\r", "&#13;").
-        gsub(%r{"}, '&quot;') # " WART
+      _escape(text).gsub(/[\n\r"]/){|c| EscapeReplacements[c]}
     end
 
     def _newline
